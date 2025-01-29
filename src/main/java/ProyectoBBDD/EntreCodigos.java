@@ -31,9 +31,8 @@ public class EntreCodigos extends javax.swing.JFrame {
         initComponents();
     }
 
-    private int codMin;
-    private int codMax;
-    boolean datos = false;
+    int codMin;
+    int codMax;
     String url = "jdbc:mysql://localhost/tienda";
     String usuario = "johann";
     String contrasenia = "manager";
@@ -204,7 +203,6 @@ public class EntreCodigos extends javax.swing.JFrame {
             try {
                 codMin = Integer.parseInt(codMinText);
                 codMax = Integer.parseInt(codMaxText);
-                datos = true;
                 generarIReport();
                 vacios();
 

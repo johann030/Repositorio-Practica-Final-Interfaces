@@ -4,6 +4,14 @@
  */
 package ProyectoBBDD;
 
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,12 +19,25 @@ import javax.swing.JOptionPane;
  * @author alumno
  */
 public class MenuProveedores extends javax.swing.JFrame {
+
     /**
      * Creates new form Clientes
      */
     public MenuProveedores() {
         initComponents();
+        desactivar();
+        this.letraNIF.setText("J");
+        this.letraNIF.setEnabled(false);
+        this.totalCompras.setText("0");
+        this.totalCompras.setEnabled(false);
     }
+
+    boolean botonAltas = false;
+    boolean botonBajas = false;
+    boolean botonModificaciones = false;
+    String URL = "jdbc:mysql://localhost/tienda";
+    String USUARIO = "johann";
+    String CONTRA = "manager";
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,7 +70,7 @@ public class MenuProveedores extends javax.swing.JFrame {
         textoFax = new javax.swing.JLabel();
         mail = new javax.swing.JTextField();
         textoMail = new javax.swing.JLabel();
-        totalVentas = new javax.swing.JTextField();
+        totalCompras = new javax.swing.JTextField();
         textoVentas = new javax.swing.JLabel();
         letraNIF = new javax.swing.JTextField();
         btnAceptar = new javax.swing.JButton();
@@ -78,6 +99,11 @@ public class MenuProveedores extends javax.swing.JFrame {
                 codigoActionPerformed(evt);
             }
         });
+        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codigoKeyPressed(evt);
+            }
+        });
 
         textoNIF.setText("N.I.F.");
 
@@ -87,9 +113,27 @@ public class MenuProveedores extends javax.swing.JFrame {
             }
         });
 
+        nombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nombreActionPerformed(evt);
+            }
+        });
+
         textoNombre.setText("Nombre");
 
+        apellidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                apellidosActionPerformed(evt);
+            }
+        });
+
         textoApellidos.setText("Apellidos");
+
+        domicilio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                domicilioActionPerformed(evt);
+            }
+        });
 
         textoDomicilio.setText("Domicilio");
 
@@ -141,8 +185,11 @@ public class MenuProveedores extends javax.swing.JFrame {
 
         textoMail.setText("e-mail");
 
-        textoVentas.setText("Total Ventas");
+        totalCompras.setText("0.0");
 
+        textoVentas.setText("Total Compras");
+
+        letraNIF.setText("J");
         letraNIF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 letraNIFActionPerformed(evt);
@@ -163,6 +210,11 @@ public class MenuProveedores extends javax.swing.JFrame {
         btnCancelar.setText("Cancelar");
         btnCancelar.setMaximumSize(new java.awt.Dimension(81, 25));
         btnCancelar.setMinimumSize(new java.awt.Dimension(81, 25));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnSalir.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
         btnSalir.setText("Salir");
@@ -177,12 +229,27 @@ public class MenuProveedores extends javax.swing.JFrame {
         mantenimiento.setText("Mantenimiento");
 
         altas.setText("Altas");
+        altas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                altasActionPerformed(evt);
+            }
+        });
         mantenimiento.add(altas);
 
         bajas.setText("Bajas");
+        bajas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bajasActionPerformed(evt);
+            }
+        });
         mantenimiento.add(bajas);
 
         modificaciones.setText("Modificaciones");
+        modificaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificacionesActionPerformed(evt);
+            }
+        });
         mantenimiento.add(modificaciones);
         mantenimiento.add(jSeparator1);
 
@@ -203,12 +270,27 @@ public class MenuProveedores extends javax.swing.JFrame {
         listado.setText("Listado");
 
         graficos.setText("Graficos");
+        graficos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                graficosActionPerformed(evt);
+            }
+        });
         listado.add(graficos);
 
         entreCodigo.setText("Entre codigos");
+        entreCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                entreCodigoActionPerformed(evt);
+            }
+        });
         listado.add(entreCodigo);
 
         porCodigo.setText("Por Codigo");
+        porCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                porCodigoActionPerformed(evt);
+            }
+        });
         listado.add(porCodigo);
 
         PC.add(listado);
@@ -225,9 +307,9 @@ public class MenuProveedores extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(domicilio)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(domicilio, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textoApellidos)
                             .addGroup(layout.createSequentialGroup()
@@ -260,7 +342,7 @@ public class MenuProveedores extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(textoVentas)
-                                    .addComponent(totalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(totalCompras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(textoDomicilio)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -277,10 +359,9 @@ public class MenuProveedores extends javax.swing.JFrame {
                                     .addComponent(localidad, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -344,92 +425,339 @@ public class MenuProveedores extends javax.swing.JFrame {
                         .addComponent(textoVentas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(totalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(totalCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(mail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoActionPerformed
-        if (!(this.codigo.getText().matches("\\d{5}"))) {
-            
-            JOptionPane.showMessageDialog(this, "El formato debe tener 5 numeros.", "Error CODIGO", JOptionPane.CLOSED_OPTION);
-        }
-        if (this.codigo.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No puede estar vacio.", "Error CODIGO", JOptionPane.CLOSED_OPTION);
-        }
+
     }//GEN-LAST:event_codigoActionPerformed
 
     private void letraNIFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_letraNIFActionPerformed
-        // TODO add your handling code here:
 
     }//GEN-LAST:event_letraNIFActionPerformed
 
     private void faxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faxActionPerformed
-        if (!(this.fax.getText().matches("\\d{9}"))) {
-            JOptionPane.showMessageDialog(this, "El formato debe tener 9 numeros.", "Error FAX", JOptionPane.CLOSED_OPTION);
-        }
-        if (this.fax.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No puede estar vacio.", "Error FAX", JOptionPane.CLOSED_OPTION);
-        }
+
     }//GEN-LAST:event_faxActionPerformed
 
     private void telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefonoActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_telefonoActionPerformed
 
     private void movilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movilActionPerformed
-        if (!(this.movil.getText().matches("\\d{9}"))) {
-            JOptionPane.showMessageDialog(this, "El formato debe tener 9 numeros.", "Error MOVIL", JOptionPane.CLOSED_OPTION);
-        }
+
     }//GEN-LAST:event_movilActionPerformed
 
     private void CPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CPActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_CPActionPerformed
 
     private void localidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_localidadActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_localidadActionPerformed
 
     private void mailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailActionPerformed
-        if (!(this.mail.getText().matches("\\d{9}"))) {
-            JOptionPane.showMessageDialog(this, "El formato debe tener 9 numeros.", "Error E-MAIL", JOptionPane.CLOSED_OPTION);
-        }
+
     }//GEN-LAST:event_mailActionPerformed
 
     private void NIFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NIFActionPerformed
-        if (!(this.NIF.getText().matches("\\d{8}"))) {
-            JOptionPane.showMessageDialog(this, "El formato debe tener 8 numeros.", "Error NIF", JOptionPane.CLOSED_OPTION);
-        }
-        if (this.NIF.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No puede estar vacio.", "Error NIF", JOptionPane.CLOSED_OPTION);
-        }
+
     }//GEN-LAST:event_NIFActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
-        despuesDeAceptar();
+        if (botonAltas == true) {
+            activar();
+            if (comprobar() == true) {
+                altas();
+                despuesDeAceptar();
+            }
+        } else if (botonBajas == true) {
+            bajas();
+            despuesDeAceptar();
+
+        } else if (botonModificaciones == true) {
+            activar();
+            if (comprobar() == true) {
+                modificaciones();
+                despuesDeAceptar();
+            }
+        }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
+    public boolean comprobar() {
+
+        //Condiciones del botón de código.
+        if (this.codigo.getText().matches("[0-9]+") == false || this.codigo.getText().length() != 6) {
+            JOptionPane.showConfirmDialog(this, "El formato debe ser de 6 numeros", "Codigo error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } //Condición NIF
+        else if (this.NIF.getText().matches("[0-9]+") == false || this.NIF.getText().length() != 8) {
+            JOptionPane.showConfirmDialog(this, "El formato debe ser de 8 numeros", "NIF error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } //Condición Nombre
+        else if (this.nombre.getText().matches("[a-zA-Z]+") == false || this.nombre.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(this, "Formato erroneo", "Nombre error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } //Condición Apellido
+        else if (this.apellidos.getText().matches("[a-zA-Z]+") == false || this.apellidos.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(this, "Formato erroneo", "Apellido error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } //Condición código postal(C.P)
+        else if (this.CP.getText().matches("[0-9]+") == false || this.CP.getText().length() != 5) {
+            JOptionPane.showConfirmDialog(this, "El formato debe ser de 5 numeros", "Codigo postal error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } else if (this.domicilio.getText().matches("[a-zA-Z]+") == false || this.domicilio.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(this, "Formato erroneo", "Domicilio error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } //Condición localidad
+        else if (this.localidad.getText().matches("[a-zA-Z]+") == false || this.localidad.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(this, "Formato erroneo", "Localidad error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } //Conndición teléfono
+        else if (!this.telefono.getText().isEmpty() && !this.telefono.getText().matches("\\d{9}")) {
+            JOptionPane.showConfirmDialog(this, "El telefono debe tener 9 numeros", "Teléfono error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } else if (!this.movil.getText().isEmpty() && !this.movil.getText().matches("\\d{9}")) {
+            JOptionPane.showConfirmDialog(this, "El movil debe tener 9 numeros", "Móvil error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } else if (!this.fax.getText().isEmpty() && !this.fax.getText().matches("\\d{9}")) {
+            JOptionPane.showConfirmDialog(this, "El fax debe tener 9 numeros", "Fax error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } else if (!this.mail.getText().isEmpty() && !this.mail.getText().matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            JOptionPane.showMessageDialog(this, "Formato erroneo", "E-mail error", JOptionPane.CLOSED_OPTION);
+            return false;
+        }
+        return true;
+    }
+
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
-        dispose();
+        despuesDeAceptar();
+        desactivar();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
-        dispose();
-        Mantenimiento m = new Mantenimiento();
-        m.setEnabled(true);
+        new Mantenimiento().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_volverActionPerformed
 
-    private void despuesDeAceptar() {
+    private void altasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_altasActionPerformed
+        botonAltas = true;
+        botonBajas = false;
+        botonModificaciones = false;
+        this.codigo.setEnabled(true);
+        fallo();
+    }//GEN-LAST:event_altasActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        despuesDeAceptar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void entreCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entreCodigoActionPerformed
+        new EntreCodigos().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_entreCodigoActionPerformed
+
+    private void bajasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bajasActionPerformed
+        botonAltas = false;
+        botonBajas = true;
+        botonModificaciones = false;
+        this.codigo.setEnabled(true);
+        fallo();
+    }//GEN-LAST:event_bajasActionPerformed
+
+    private void modificacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificacionesActionPerformed
+        botonAltas = false;
+        botonBajas = false;
+        botonModificaciones = true;
+        this.codigo.setEnabled(true);
+        fallo();
+    }//GEN-LAST:event_modificacionesActionPerformed
+
+    private void graficosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graficosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_graficosActionPerformed
+
+    private void porCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_porCodigoActionPerformed
+        new PorCodigo().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_porCodigoActionPerformed
+
+    private void nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreActionPerformed
+
+    }//GEN-LAST:event_nombreActionPerformed
+
+    private void domicilioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_domicilioActionPerformed
+
+    }//GEN-LAST:event_domicilioActionPerformed
+
+    private void apellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apellidosActionPerformed
+
+    }//GEN-LAST:event_apellidosActionPerformed
+
+    private void codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyPressed
+        if (botonAltas == true) {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                if ((this.codigo.getText().matches("\\d{6}")) && !(this.codigo.getText().isEmpty())) {
+                    if (!codigoExiste(this.codigo.getText())) {
+                        activar();
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "EL codigo ya existe en la base de datos");
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Debe introducir un codigo y tiene que ser de 6 digitos");
+                }
+            }
+        } else if (botonBajas == true) {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                btnAceptar.setEnabled(true);
+            }
+        }
+
+    }//GEN-LAST:event_codigoKeyPressed
+
+    public boolean codigoExiste(String codigo) {
+        try {
+            Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+            String sql = """
+                        SELECT COUNT(*)
+                        FROM proveedores
+                        WHERE codigo = ?
+                        """;
+
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, codigo);
+
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+
+                rs.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuProveedores.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+
+    }
+
+    public void altas() {
+        try {
+            Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+            String sql = """
+                         INSERT INTO proveedores(codigo, nif, apellidos, nombre, domicilio, codigoPostal, localidad, telefono, movil, fax, mail, totalCompras)
+                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                         """;
+
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, this.codigo.getText());
+                ps.setString(2, this.NIF.getText());
+                ps.setString(3, this.apellidos.getText());
+                ps.setString(4, this.nombre.getText());
+                ps.setString(5, this.domicilio.getText());
+                ps.setString(6, this.CP.getText());
+                ps.setString(7, this.localidad.getText());
+                ps.setString(8, this.telefono.getText());
+                ps.setString(9, this.movil.getText());
+                ps.setString(10, this.fax.getText());
+                ps.setString(11, this.mail.getText());
+                ps.setFloat(12, Float.parseFloat(this.totalCompras.getText()));
+
+                int filas = ps.executeUpdate();
+
+                if (filas > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "CLIENTE INSERTDO CORRECTAMENTE");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuProveedores.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void bajas() {
+        try {
+            Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+            String sql = """
+                         DELETE FROM proveedores
+                         WHERE codigo = ?
+                         """;
+
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, this.codigo.getText());
+
+                int filas = ps.executeUpdate();
+
+                if (filas > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "CLIENTE BORRADO CORRECTAMENTE");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "NO SE ENCONTRO UN CLIENTE CON ESE CODIGO");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuProveedores.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, "ERROR AL BORRAR CLIENTE: " + ex.getMessage());
+        }
+    }
+
+    public void modificaciones() {
+        try {
+            Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+            String sql = """
+                         UPDATE proveedores SET
+                         apellidos = ?,
+                         nombre = ?,
+                         domicilio = ?,
+                         codigoPostal = ?,
+                         localidad = ?,
+                         telefono = ?,
+                         movil = ?,
+                         fax = ?,
+                         mail = ?
+                         WHERE codigo = ?
+                         """;
+
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, NIF.getText());
+                ps.setString(2, apellidos.getText());
+                ps.setString(3, nombre.getText());
+                ps.setString(4, domicilio.getText());
+                ps.setString(5, CP.getText());
+                ps.setString(6, localidad.getText());
+                ps.setString(7, telefono.getText());
+                ps.setString(8, movil.getText());
+                ps.setString(9, fax.getText());
+                ps.setString(10, mail.getText());
+                ps.setFloat(11, Float.parseFloat(totalCompras.getText()));
+                ps.setString(12, codigo.getText());
+
+                int filas = ps.executeUpdate();
+
+                if (filas > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "CLIENTE ACTUALIZADO CORRECTAMENTE");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "NO SE ENCONTRO UN CLIENTE CON ESE CODIGO");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuProveedores.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, "ERROR AL ACTUALIZAR CLIENTE: " + ex.getMessage());
+        }
+    }
+
+    public void despuesDeAceptar() {
         this.codigo.setText("");
         this.NIF.setText("");
         this.nombre.setText("");
@@ -441,8 +769,59 @@ public class MenuProveedores extends javax.swing.JFrame {
         this.movil.setText("");
         this.fax.setText("");
         this.mail.setText("");
-        this.totalVentas.setText("");
+        this.totalCompras.setText("");
         this.codigo.grabFocus();
+    }
+
+    public void desactivar() {
+        this.codigo.setEnabled(false);
+        this.NIF.setEnabled(false);
+        this.nombre.setEnabled(false);
+        this.apellidos.setEnabled(false);
+        this.domicilio.setEnabled(false);
+        this.CP.setEnabled(false);
+        this.localidad.setEnabled(false);
+        this.telefono.setEnabled(false);
+        this.movil.setEnabled(false);
+        this.fax.setEnabled(false);
+        this.mail.setEnabled(false);
+        this.btnAceptar.setEnabled(false);
+        this.btnCancelar.setEnabled(false);
+        this.btnSalir.setEnabled(false);
+    }
+
+    public void fallo() {
+        this.codigo.setText("");
+        this.NIF.setEnabled(false);
+        this.nombre.setEnabled(false);
+        this.apellidos.setEnabled(false);
+        this.domicilio.setEnabled(false);
+        this.CP.setEnabled(false);
+        this.localidad.setEnabled(false);
+        this.telefono.setEnabled(false);
+        this.movil.setEnabled(false);
+        this.fax.setEnabled(false);
+        this.mail.setEnabled(false);
+        this.btnAceptar.setEnabled(false);
+        this.btnCancelar.setEnabled(false);
+        this.btnSalir.setEnabled(false);
+    }
+
+    private void activar() {
+        this.codigo.setEnabled(true);
+        this.NIF.setEnabled(true);
+        this.nombre.setEnabled(true);
+        this.apellidos.setEnabled(true);
+        this.domicilio.setEnabled(true);
+        this.CP.setEnabled(true);
+        this.localidad.setEnabled(true);
+        this.telefono.setEnabled(true);
+        this.movil.setEnabled(true);
+        this.fax.setEnabled(true);
+        this.mail.setEnabled(true);
+        this.btnAceptar.setEnabled(true);
+        this.btnCancelar.setEnabled(true);
+        this.btnSalir.setEnabled(true);
     }
 
     /**
@@ -470,6 +849,34 @@ public class MenuProveedores extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MenuProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -523,7 +930,7 @@ public class MenuProveedores extends javax.swing.JFrame {
     private javax.swing.JLabel textoTelefono;
     private javax.swing.JLabel textoVentas;
     private javax.swing.JLabel textocodigo;
-    private javax.swing.JTextField totalVentas;
+    private javax.swing.JTextField totalCompras;
     private javax.swing.JMenuItem volver;
     // End of variables declaration//GEN-END:variables
 }

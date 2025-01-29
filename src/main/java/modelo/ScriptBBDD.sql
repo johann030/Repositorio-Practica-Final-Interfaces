@@ -28,7 +28,7 @@ telefono VARCHAR(9),
 movil VARCHAR(9),
 fax VARCHAR(9),
 mail VARCHAR(60),
-totalVentas FLOAT
+totalCompras FLOAT
 );
 
 create table articulos(

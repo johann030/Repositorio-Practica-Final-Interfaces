@@ -22,12 +22,12 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author Usuario
  */
-public class PorCodigo extends javax.swing.JFrame {
+public class PorCodigoProveedores extends javax.swing.JFrame {
 
     /**
      * Creates new form PorCodigo
      */
-    public PorCodigo() {
+    public PorCodigoProveedores() {
         initComponents();
     }
 
@@ -255,20 +255,21 @@ public class PorCodigo extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PorCodigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PorCodigoProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PorCodigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PorCodigoProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PorCodigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PorCodigoProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PorCodigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PorCodigoProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PorCodigo().setVisible(true);
+                new PorCodigoProveedores().setVisible(true);
             }
         });
     }
