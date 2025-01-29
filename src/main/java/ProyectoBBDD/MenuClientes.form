@@ -118,9 +118,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="domicilio" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="domicilio" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="textoApellidos" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
@@ -186,9 +186,8 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="btnAceptar" min="-2" pref="100" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnCancelar" min="-2" pref="100" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnSalir" min="-2" pref="100" max="-2" attributes="0"/>
@@ -280,7 +279,7 @@
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnSalir" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="32" max="32767" attributes="0"/>
+              <EmptySpace pref="14" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -294,6 +293,7 @@
     <Component class="javax.swing.JTextField" name="codigo">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="codigoActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="codigoKeyPressed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="textoNIF">
@@ -307,6 +307,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="nombre">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nombreActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="textoNombre">
       <Properties>
@@ -314,6 +317,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="apellidos">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="apellidosActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="textoApellidos">
       <Properties>
@@ -321,6 +327,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="domicilio">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="domicilioActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="textoDomicilio">
       <Properties>
@@ -388,6 +397,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="totalVentas">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0.0"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="textoVentas">
       <Properties>

@@ -20,19 +20,18 @@ import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
- * @author alumno
+ * @author Usuario
  */
-public class EntreCodigos extends javax.swing.JFrame {
+public class PorCodigo extends javax.swing.JFrame {
 
     /**
-     * Creates new form EntreCodigos
+     * Creates new form PorCodigo
      */
-    public EntreCodigos() {
+    public PorCodigo() {
         initComponents();
     }
 
-    private int codMin;
-    private int codMax;
+    int buscarCodigo;
     boolean datos = false;
     String url = "jdbc:mysql://localhost/tienda";
     String usuario = "johann";
@@ -47,11 +46,9 @@ public class EntreCodigos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        imprimir = new javax.swing.JButton();
-        textoCodigo1 = new javax.swing.JLabel();
-        textoCodigo2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         codigo1 = new javax.swing.JTextField();
-        codigo2 = new javax.swing.JTextField();
+        imprimir = new javax.swing.JButton();
         menu = new javax.swing.JMenuBar();
         mantenimiento = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -64,16 +61,7 @@ public class EntreCodigos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        imprimir.setText("Imprimir");
-        imprimir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                imprimirActionPerformed(evt);
-            }
-        });
-
-        textoCodigo1.setText("1º codigo");
-
-        textoCodigo2.setText("2º codigo");
+        jLabel1.setText("Codigo");
 
         codigo1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,28 +69,15 @@ public class EntreCodigos extends javax.swing.JFrame {
             }
         });
         codigo1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                codigo1KeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                codigo1KeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 codigo1KeyTyped(evt);
             }
         });
 
-        codigo2.addActionListener(new java.awt.event.ActionListener() {
+        imprimir.setText("Imprimir");
+        imprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codigo2ActionPerformed(evt);
-            }
-        });
-        codigo2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                codigo2KeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                codigo2KeyTyped(evt);
+                imprimirActionPerformed(evt);
             }
         });
 
@@ -154,43 +129,43 @@ public class EntreCodigos extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textoCodigo2)
-                    .addComponent(textoCodigo1))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(imprimir)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(codigo1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(imprimir)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(codigo2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(172, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addGap(89, 89, 89)
+                        .addComponent(codigo1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(169, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textoCodigo1)
-                    .addComponent(codigo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textoCodigo2)
-                    .addComponent(codigo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(85, 85, 85)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(codigo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(65, 65, 65)
                 .addComponent(imprimir)
-                .addGap(72, 72, 72))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void codigo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigo2ActionPerformed
+    private void graficosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graficosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_codigo2ActionPerformed
+    }//GEN-LAST:event_graficosActionPerformed
+
+    private void entreCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entreCodigoActionPerformed
+        new EntreCodigos().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_entreCodigoActionPerformed
+
+    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
+        new Mantenimiento().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_volverActionPerformed
 
     private void codigo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigo1ActionPerformed
         // TODO add your handling code here:
@@ -198,12 +173,10 @@ public class EntreCodigos extends javax.swing.JFrame {
 
     private void imprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirActionPerformed
         String codMinText = this.codigo1.getText();
-        String codMaxText = this.codigo2.getText();
 
-        if (!codMinText.isEmpty() && !codMaxText.isEmpty()) {
+        if (!codMinText.isEmpty()) {
             try {
-                codMin = Integer.parseInt(codMinText);
-                codMax = Integer.parseInt(codMaxText);
+                buscarCodigo = Integer.parseInt(codMinText);
                 datos = true;
                 generarIReport();
                 vacios();
@@ -216,64 +189,21 @@ public class EntreCodigos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_imprimirActionPerformed
 
-    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
-        new Mantenimiento().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_volverActionPerformed
-
-    private void graficosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graficosActionPerformed
-        new Graficos().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_graficosActionPerformed
-
-    private void entreCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entreCodigoActionPerformed
-        new EntreCodigos().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_entreCodigoActionPerformed
-
-    private void codigo1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo1KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_codigo1KeyPressed
-
-    private void codigo2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo2KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_codigo2KeyPressed
-
-    private void codigo1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo1KeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_codigo1KeyReleased
-
     private void codigo1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo1KeyTyped
         char c = evt.getKeyChar();
 
-        // Verificar si el carácter no es un dígito
         if (!Character.isDigit(c)) {
-            evt.consume(); // Consumir el evento si no es un dígito
+            evt.consume();
             return;
         }
 
-        // Verificar si la longitud actual del texto es mayor o igual a 4
         if (codigo1.getText().length() >= 6) {
-            evt.consume(); // Consumir el evento si ya hay 4 caracteres
+            evt.consume();
         }
     }//GEN-LAST:event_codigo1KeyTyped
 
-    private void codigo2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo2KeyTyped
-        char c = evt.getKeyChar();
-
-        if (!Character.isDigit(c)) {
-            evt.consume();
-            return;
-        }
-
-        if (codigo2.getText().length() >= 6) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_codigo2KeyTyped
-
     public void vacios() {
         codigo1.setText("");
-        codigo2.setText("");
     }
 
     public void generarIReport() {
@@ -282,18 +212,16 @@ public class EntreCodigos extends javax.swing.JFrame {
             conexion = DriverManager.getConnection(url, usuario, contrasenia);
             System.out.println("Conexión exitosa a la base de datos.");
 
-            if (!codigo1.getText().isEmpty() && !codigo2.getText().isEmpty()) {
+            if (!codigo1.getText().isEmpty()) {
 
                 // Recoger los valores de los códigos
-                codMin = Integer.parseInt(codigo1.getText());
-                codMax = Integer.parseInt(codigo2.getText());
+                buscarCodigo = Integer.parseInt(codigo1.getText());
 
-                String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireport1\\report.jasper";
-                String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireport1\\report.pdf";
+                String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireport2\\report.jasper";
+                String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireport2\\report.pdf";
 
                 Map<String, Object> parametros = new HashMap<>();
-                parametros.put("codMin", codMin);
-                parametros.put("codMax", codMax);
+                parametros.put("buscarCodigo", buscarCodigo);
 
                 JasperPrint jasperPrint = JasperFillManager.fillReport(informeOrigen, parametros, conexion);
                 System.out.println("GENERANDO INFORME");
@@ -329,20 +257,20 @@ public class EntreCodigos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EntreCodigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PorCodigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EntreCodigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PorCodigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EntreCodigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PorCodigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EntreCodigos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PorCodigo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EntreCodigos().setVisible(true);
+                new PorCodigo().setVisible(true);
             }
         });
     }
@@ -350,17 +278,15 @@ public class EntreCodigos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu PC;
     private javax.swing.JTextField codigo1;
-    private javax.swing.JTextField codigo2;
     private javax.swing.JMenu consultas;
     private javax.swing.JMenuItem entreCodigo;
     private javax.swing.JMenuItem graficos;
     private javax.swing.JButton imprimir;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu listado;
     private javax.swing.JMenu mantenimiento;
     private javax.swing.JMenuBar menu;
-    private javax.swing.JLabel textoCodigo1;
-    private javax.swing.JLabel textoCodigo2;
     private javax.swing.JMenuItem volver;
     // End of variables declaration//GEN-END:variables
 }

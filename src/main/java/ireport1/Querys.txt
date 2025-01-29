@@ -1,0 +1,12 @@
+SELECT *
+FROM clientes
+WHERE codigo BETWEEN $P{codMin} AND $P{codMax}
+ORDER BY codigo DESC;
+
+
+
+
+SELECT *
+FROM clientes
+WHERE codigo = $P{buscarCodigo}
+ORDER BY codigo DESC;

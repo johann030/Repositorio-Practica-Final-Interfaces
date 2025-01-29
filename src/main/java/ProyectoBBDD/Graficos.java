@@ -26,7 +26,60 @@ public class Graficos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        menu = new javax.swing.JMenuBar();
+        mantenimiento = new javax.swing.JMenu();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        volver = new javax.swing.JMenuItem();
+        consultas = new javax.swing.JMenu();
+        PC = new javax.swing.JMenu();
+        listado = new javax.swing.JMenu();
+        entreCodigo = new javax.swing.JMenuItem();
+        porCodigo = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        mantenimiento.setText("Mantenimiento");
+        mantenimiento.add(jSeparator1);
+
+        volver.setText("Volver");
+        volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverActionPerformed(evt);
+            }
+        });
+        mantenimiento.add(volver);
+
+        menu.add(mantenimiento);
+
+        consultas.setText("Consultas");
+
+        PC.setText("Por Codigo");
+
+        listado.setText("Listado");
+
+        entreCodigo.setText("Entre codigos");
+        entreCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                entreCodigoActionPerformed(evt);
+            }
+        });
+        listado.add(entreCodigo);
+
+        porCodigo.setText("Por Codigo");
+        porCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                porCodigoActionPerformed(evt);
+            }
+        });
+        listado.add(porCodigo);
+
+        PC.add(listado);
+
+        consultas.add(PC);
+
+        menu.add(consultas);
+
+        setJMenuBar(menu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -36,11 +89,26 @@ public class Graficos extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
+        new Mantenimiento().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_volverActionPerformed
+
+    private void entreCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entreCodigoActionPerformed
+        new EntreCodigos().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_entreCodigoActionPerformed
+
+    private void porCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_porCodigoActionPerformed
+        new PorCodigo().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_porCodigoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +146,14 @@ public class Graficos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu PC;
+    private javax.swing.JMenu consultas;
+    private javax.swing.JMenuItem entreCodigo;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenu listado;
+    private javax.swing.JMenu mantenimiento;
+    private javax.swing.JMenuBar menu;
+    private javax.swing.JMenuItem porCodigo;
+    private javax.swing.JMenuItem volver;
     // End of variables declaration//GEN-END:variables
 }

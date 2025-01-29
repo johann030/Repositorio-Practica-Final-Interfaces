@@ -32,7 +32,7 @@ totalVentas FLOAT
 );
 
 create table articulos(
-codigo_articulo VARCHAR(6) PRIMARY KEY NOT NULL,
+codigo VARCHAR(6) PRIMARY KEY NOT NULL,
 descripcion VARCHAR(25),
 stock FLOAT,
 stockMinimo FLOAT,
