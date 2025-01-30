@@ -9,8 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -32,6 +30,7 @@ public class PorCodigoArticulos extends javax.swing.JFrame {
     }
 
     int buscarCodigo;
+    Connection conexion;
     String url = "jdbc:mysql://localhost/tienda";
     String usuario = "johann";
     String contrasenia = "manager";
@@ -205,36 +204,36 @@ public class PorCodigoArticulos extends javax.swing.JFrame {
     }
 
     public void generarIReport() {
-        Connection conexion;
         try {
             conexion = DriverManager.getConnection(url, usuario, contrasenia);
             System.out.println("Conexión exitosa a la base de datos.");
+        } catch (SQLException e) {
+            System.err.println("Error al conectar con la base de datos: " + e.getMessage());
+            conexion = null;
+        }
 
-            if (!codigo1.getText().isEmpty()) {
+        if (!codigo1.getText().isEmpty()) {
+            // Recoger los valores de los códigos
+            buscarCodigo = Integer.parseInt(codigo1.getText());
 
-                // Recoger los valores de los códigos
-                buscarCodigo = Integer.parseInt(codigo1.getText());
+            String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportArticulos.jasper";
+            String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportArticulos.pdf";
 
-                String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireport2\\report.jasper";
-                String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireport2\\report.pdf";
+            Map parametros = new HashMap<>();
+            parametros.put("buscarCodigo", buscarCodigo);
 
-                Map<String, Object> parametros = new HashMap<>();
-                parametros.put("buscarCodigo", buscarCodigo);
-
+            try {
                 JasperPrint jasperPrint = JasperFillManager.fillReport(informeOrigen, parametros, conexion);
                 System.out.println("GENERANDO INFORME");
                 JasperExportManager.exportReportToPdfFile(jasperPrint, informeDestino);
 
                 // Mostrar el informe
                 JasperViewer.viewReport(jasperPrint, false);
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Los campos no tienen datos");
+            } catch (JRException ex) {
+                System.err.print(ex.getMessage());
             }
-        } catch (JRException ex) {
-            System.err.print(ex.getMessage());
-        } catch (SQLException ex) {
-            Logger.getLogger(EntreCodigos.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            JOptionPane.showMessageDialog(this, "Los campos no tienen datos");
         }
     }
 

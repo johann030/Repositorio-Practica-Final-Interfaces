@@ -563,7 +563,7 @@ public class MenuProveedores extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void entreCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entreCodigoActionPerformed
-        new EntreCodigos().setVisible(true);
+        new EntreCodigosProveedores().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_entreCodigoActionPerformed
 
@@ -588,7 +588,7 @@ public class MenuProveedores extends javax.swing.JFrame {
     }//GEN-LAST:event_graficosActionPerformed
 
     private void porCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_porCodigoActionPerformed
-        new PorCodigo().setVisible(true);
+        new PorCodigoProveedores().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_porCodigoActionPerformed
 

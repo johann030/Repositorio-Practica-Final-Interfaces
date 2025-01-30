@@ -9,8 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -31,10 +29,8 @@ public class PorCodigo extends javax.swing.JFrame {
         initComponents();
     }
 
-    int buscarCodigo;
-    String url = "jdbc:mysql://localhost/tienda";
-    String usuario = "johann";
-    String contrasenia = "manager";
+    private int buscarCodigo;
+    Connection conexion;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,7 +42,7 @@ public class PorCodigo extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        codigo1 = new javax.swing.JTextField();
+        codigo = new javax.swing.JTextField();
         imprimir = new javax.swing.JButton();
         menu = new javax.swing.JMenuBar();
         mantenimiento = new javax.swing.JMenu();
@@ -62,14 +58,14 @@ public class PorCodigo extends javax.swing.JFrame {
 
         jLabel1.setText("Codigo");
 
-        codigo1.addActionListener(new java.awt.event.ActionListener() {
+        codigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codigo1ActionPerformed(evt);
+                codigoActionPerformed(evt);
             }
         });
-        codigo1.addKeyListener(new java.awt.event.KeyAdapter() {
+        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                codigo1KeyTyped(evt);
+                codigoKeyTyped(evt);
             }
         });
 
@@ -134,7 +130,7 @@ public class PorCodigo extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(89, 89, 89)
-                        .addComponent(codigo1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(169, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -142,7 +138,7 @@ public class PorCodigo extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(85, 85, 85)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(codigo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(65, 65, 65)
                 .addComponent(imprimir)
@@ -166,12 +162,12 @@ public class PorCodigo extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_volverActionPerformed
 
-    private void codigo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigo1ActionPerformed
+    private void codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_codigo1ActionPerformed
+    }//GEN-LAST:event_codigoActionPerformed
 
     private void imprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirActionPerformed
-        String codMinText = this.codigo1.getText();
+        String codMinText = this.codigo.getText();
 
         if (!codMinText.isEmpty()) {
             try {
@@ -187,7 +183,7 @@ public class PorCodigo extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_imprimirActionPerformed
 
-    private void codigo1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigo1KeyTyped
+    private void codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyTyped
         char c = evt.getKeyChar();
 
         if (!Character.isDigit(c)) {
@@ -195,46 +191,47 @@ public class PorCodigo extends javax.swing.JFrame {
             return;
         }
 
-        if (codigo1.getText().length() >= 6) {
+        if (codigo.getText().length() >= 6) {
             evt.consume();
         }
-    }//GEN-LAST:event_codigo1KeyTyped
+    }//GEN-LAST:event_codigoKeyTyped
 
     public void vacios() {
-        codigo1.setText("");
+        codigo.setText("");
     }
 
     public void generarIReport() {
-        Connection conexion;
         try {
-            conexion = DriverManager.getConnection(url, usuario, contrasenia);
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost/tienda", "johann", "manager");
             System.out.println("Conexión exitosa a la base de datos.");
+        } catch (SQLException e) {
+            System.err.println("Error al conectar con la base de datos: " + e.getMessage());
+            conexion = null;
+        }
 
-            if (!codigo1.getText().isEmpty()) {
+        if (!codigo.getText().isEmpty()) {
+            // Recoger los valores de los códigos
+            buscarCodigo = Integer.parseInt(codigo.getText());
 
-                // Recoger los valores de los códigos
-                buscarCodigo = Integer.parseInt(codigo1.getText());
+            String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportClientes.jasper";
+            String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportClientes.pdf";
 
-                String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireport2\\report.jasper";
-                String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireport2\\report.pdf";
+            Map parametros = new HashMap<>();
+            parametros.put("buscarCodigo", buscarCodigo);
 
-                Map<String, Object> parametros = new HashMap<>();
-                parametros.put("buscarCodigo", buscarCodigo);
-
+            try {
                 JasperPrint jasperPrint = JasperFillManager.fillReport(informeOrigen, parametros, conexion);
                 System.out.println("GENERANDO INFORME");
+
                 JasperExportManager.exportReportToPdfFile(jasperPrint, informeDestino);
 
                 // Mostrar el informe
                 JasperViewer.viewReport(jasperPrint, false);
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Los campos no tienen datos");
+            } catch (JRException ex) {
+                System.err.print(ex.getMessage());
             }
-        } catch (JRException ex) {
-            System.err.print(ex.getMessage());
-        } catch (SQLException ex) {
-            Logger.getLogger(EntreCodigos.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            JOptionPane.showMessageDialog(this, "Los campos no tienen datos");
         }
     }
 
@@ -275,7 +272,7 @@ public class PorCodigo extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu PC;
-    private javax.swing.JTextField codigo1;
+    private javax.swing.JTextField codigo;
     private javax.swing.JMenu consultas;
     private javax.swing.JMenuItem entreCodigo;
     private javax.swing.JMenuItem graficos;

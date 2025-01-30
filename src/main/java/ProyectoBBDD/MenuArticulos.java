@@ -4,6 +4,16 @@
  */
 package ProyectoBBDD;
 
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author alumno
@@ -15,7 +25,15 @@ public class MenuArticulos extends javax.swing.JFrame {
      */
     public MenuArticulos() {
         initComponents();
+        desactivar();
     }
+
+    boolean botonAltas = false;
+    boolean botonBajas = false;
+    boolean botonModificaciones = false;
+    String URL = "jdbc:mysql://localhost/tienda";
+    String USUARIO = "johann";
+    String CONTRA = "manager";
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,6 +44,21 @@ public class MenuArticulos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnAceptar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
+        textocodigo = new javax.swing.JLabel();
+        codigo = new javax.swing.JTextField();
+        precioVenta = new javax.swing.JTextField();
+        textoPrecioVentas = new javax.swing.JLabel();
+        descripcion = new javax.swing.JTextField();
+        textoDescripcion = new javax.swing.JLabel();
+        stock = new javax.swing.JTextField();
+        textoStock = new javax.swing.JLabel();
+        stockMinimo = new javax.swing.JTextField();
+        textoStockMinimo = new javax.swing.JLabel();
+        precioCompra = new javax.swing.JTextField();
+        textoPrecioCompra = new javax.swing.JLabel();
         menu = new javax.swing.JMenuBar();
         mantenimiento = new javax.swing.JMenu();
         altas = new javax.swing.JMenuItem();
@@ -36,11 +69,96 @@ public class MenuArticulos extends javax.swing.JFrame {
         consultas = new javax.swing.JMenu();
         PC = new javax.swing.JMenu();
         listado = new javax.swing.JMenu();
-        graficos = new javax.swing.JMenuItem();
         entreCodigo = new javax.swing.JMenuItem();
         porCodigo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnAceptar.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        btnAceptar.setText("Aceptar");
+        btnAceptar.setMaximumSize(new java.awt.Dimension(75, 25));
+        btnAceptar.setMinimumSize(new java.awt.Dimension(75, 25));
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setMaximumSize(new java.awt.Dimension(81, 25));
+        btnCancelar.setMinimumSize(new java.awt.Dimension(81, 25));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnSalir.setFont(new java.awt.Font("Segoe UI Historic", 0, 14)); // NOI18N
+        btnSalir.setText("Salir");
+        btnSalir.setMaximumSize(new java.awt.Dimension(57, 25));
+        btnSalir.setMinimumSize(new java.awt.Dimension(57, 25));
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
+        textocodigo.setText("Codigo");
+
+        codigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codigoActionPerformed(evt);
+            }
+        });
+        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codigoKeyPressed(evt);
+            }
+        });
+
+        textoPrecioVentas.setText("Precio Venta");
+
+        textoDescripcion.setText("Decripcion");
+
+        stock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stockActionPerformed(evt);
+            }
+        });
+        stock.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                stockKeyPressed(evt);
+            }
+        });
+
+        textoStock.setText("Stock");
+
+        stockMinimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stockMinimoActionPerformed(evt);
+            }
+        });
+        stockMinimo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                stockMinimoKeyPressed(evt);
+            }
+        });
+
+        textoStockMinimo.setText("Stock minimo");
+
+        precioCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                precioCompraActionPerformed(evt);
+            }
+        });
+        precioCompra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                precioCompraKeyPressed(evt);
+            }
+        });
+
+        textoPrecioCompra.setText("Precio Compra");
 
         mantenimiento.setText("Mantenimiento");
 
@@ -85,14 +203,6 @@ public class MenuArticulos extends javax.swing.JFrame {
 
         listado.setText("Listado");
 
-        graficos.setText("Graficos");
-        graficos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                graficosActionPerformed(evt);
-            }
-        });
-        listado.add(graficos);
-
         entreCodigo.setText("Entre codigos");
         entreCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,26 +231,110 @@ public class MenuArticulos extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textocodigo)
+                            .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(textoDescripcion)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(descripcion)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textoPrecioCompra)
+                    .addComponent(precioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textoStock)
+                    .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textoStockMinimo)
+                    .addComponent(stockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textoPrecioVentas)
+                    .addComponent(precioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(69, 69, 69))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 280, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textocodigo)
+                            .addComponent(textoDescripcion))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(textoStock)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(textoStockMinimo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(stockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(textoPrecioCompra)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(precioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(textoPrecioVentas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(precioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void altasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_altasActionPerformed
-        
+        botonAltas = true;
+        botonBajas = false;
+        botonModificaciones = false;
+        this.codigo.setEnabled(true);
+        fallo();
     }//GEN-LAST:event_altasActionPerformed
 
     private void bajasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bajasActionPerformed
-        
+        botonAltas = false;
+        botonBajas = true;
+        botonModificaciones = false;
+        this.codigo.setEnabled(true);
+        fallo();
     }//GEN-LAST:event_bajasActionPerformed
 
     private void modificacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificacionesActionPerformed
-        
+        botonAltas = false;
+        botonBajas = false;
+        botonModificaciones = true;
+        this.codigo.setEnabled(true);
+        fallo();
     }//GEN-LAST:event_modificacionesActionPerformed
 
     private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
@@ -148,18 +342,274 @@ public class MenuArticulos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_volverActionPerformed
 
-    private void graficosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graficosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_graficosActionPerformed
-
     private void entreCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entreCodigoActionPerformed
-        new EntreCodigos().setVisible(true);
+        new EntreCodigosArticulos().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_entreCodigoActionPerformed
 
     private void porCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_porCodigoActionPerformed
-        
+        new PorCodigoArticulos().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_porCodigoActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        if (botonAltas == true) {
+            activar();
+            if (comprobar() == true) {
+                altas();
+                despuesDeAceptar();
+            }
+        } else if (botonBajas == true) {
+            bajas();
+            despuesDeAceptar();
+
+        } else if (botonModificaciones == true) {
+            activar();
+            if (comprobar() == true) {
+                modificaciones();
+                despuesDeAceptar();
+            }
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+    public boolean comprobar() {
+        if (this.codigo.getText().matches("[0-9]+") == false || this.codigo.getText().length() != 6) {
+            JOptionPane.showConfirmDialog(this, "El formato debe ser de 6 numeros", "Codigo error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } else if (this.descripcion.getText().matches("[a-zA-Z]+") == false || this.descripcion.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(this, "Formato erroneo", "Nombre error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } else if (!this.stock.getText().matches("\\d+") || this.stock.getText().isEmpty()) {
+            JOptionPane.showConfirmDialog(this, "El stock debe ser un numero positivo", "Stock error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } else if (!this.stockMinimo.getText().matches("\\d+") || this.stockMinimo.getText().isEmpty()) {
+            JOptionPane.showConfirmDialog(this, "El stock debe ser un numero positivo", "Stock minimo error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } else if (!this.precioCompra.getText().matches("\\d+(\\.\\d{1,2})?") || this.precioCompra.getText().isEmpty()) {
+            JOptionPane.showConfirmDialog(this, "Error en formato", "Precio compra error", JOptionPane.CLOSED_OPTION);
+            return false;
+        } else if (!this.precioVenta.getText().matches("\\d+(\\.\\d{1,2})?") || this.precioVenta.getText().isEmpty()) {
+            JOptionPane.showConfirmDialog(this, "Error en formato", "Precio venta error", JOptionPane.CLOSED_OPTION);
+            return false;
+        }
+        return true;
+    }
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        despuesDeAceptar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        despuesDeAceptar();
+        desactivar();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoActionPerformed
+
+    }//GEN-LAST:event_codigoActionPerformed
+
+    private void codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyPressed
+        if (botonAltas == true) {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                if ((this.codigo.getText().matches("\\d{6}")) && !(this.codigo.getText().isEmpty())) {
+                    if (!codigoExiste(this.codigo.getText())) {
+                        activar();
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "EL codigo ya existe en la base de datos");
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Debe introducir un codigo y tiene que ser de 6 digitos");
+                }
+            }
+        } else if (botonBajas == true) {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                btnAceptar.setEnabled(true);
+            }
+        }
+    }//GEN-LAST:event_codigoKeyPressed
+
+    public boolean codigoExiste(String codigo) {
+        try {
+            Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+            String sql = """
+                        SELECT COUNT(*)
+                        FROM articulos
+                        WHERE codigo = ?
+                        """;
+
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, codigo);
+
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+
+                rs.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuClientes.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al conectar con la base de datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+    public void altas() {
+        //TODO
+        try {
+            Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+            String sql = """
+                         INSERT INTO clientes(codigo, descripcion, stock, stockMinimo, precioCompra, precioVenta)
+                         VALUES (?, ?, ?, ?, ?, ?)
+                         """;
+
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, this.codigo.getText());
+                ps.setString(2, this.descripcion.getText());
+                ps.setFloat(3, Float.parseFloat(this.stock.getText()));
+                ps.setFloat(4, Float.parseFloat(this.stockMinimo.getText()));
+                ps.setFloat(5, Float.parseFloat(this.precioCompra.getText()));
+                ps.setFloat(6, Float.parseFloat(this.precioVenta.getText()));
+
+                int filas = ps.executeUpdate();
+
+                if (filas > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "CLIENTE INSERTDO CORRECTAMENTE");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuClientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void bajas() {
+        try {
+            Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+            String sql = """
+                         DELETE FROM articulos
+                         WHERE codigo = ?
+                         """;
+
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, this.codigo.getText());
+
+                int filas = ps.executeUpdate();
+
+                if (filas > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "CLIENTE BORRADO CORRECTAMENTE");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "NO SE ENCONTRO UN CLIENTE CON ESE CODIGO");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuClientes.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, "ERROR AL BORRAR CLIENTE: " + ex.getMessage());
+        }
+    }
+
+    public void modificaciones() {
+        try {
+            Connection conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+            String sql = """
+                         UPDATE articulos SET
+                         descripcion= ?,
+                         stock = ?,
+                         stockMinimo = ?,
+                         precioCompra = ?,
+                         precioVenta = ?,
+                         WHERE codigo = ?
+                         """;
+
+            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+                ps.setString(1, this.codigo.getText());
+                ps.setString(2, this.descripcion.getText());
+                ps.setFloat(3, Float.parseFloat(this.stock.getText()));
+                ps.setFloat(4, Float.parseFloat(this.stockMinimo.getText()));
+                ps.setFloat(5, Float.parseFloat(this.precioCompra.getText()));
+                ps.setFloat(6, Float.parseFloat(this.precioVenta.getText()));
+
+                int filas = ps.executeUpdate();
+
+                if (filas > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "CLIENTE ACTUALIZADO CORRECTAMENTE");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "NO SE ENCONTRO UN CLIENTE CON ESE CODIGO");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuClientes.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, "ERROR AL ACTUALIZAR CLIENTE: " + ex.getMessage());
+        }
+    }
+
+    public void despuesDeAceptar() {
+        this.codigo.setText("");
+        this.descripcion.setText("");
+        this.stock.setText("");
+        this.stockMinimo.setText("");
+        this.precioCompra.setText("");
+        this.precioVenta.setText("");
+        this.codigo.grabFocus();
+    }
+
+    public void desactivar() {
+        this.codigo.setEnabled(false);
+        this.descripcion.setEnabled(false);
+        this.stock.setEnabled(false);
+        this.stockMinimo.setEnabled(false);
+        this.precioCompra.setEnabled(false);
+        this.precioVenta.setEnabled(false);
+        this.btnAceptar.setEnabled(false);
+        this.btnCancelar.setEnabled(false);
+        this.btnSalir.setEnabled(false);
+    }
+
+    public void fallo() {
+        this.codigo.setText("");
+        this.descripcion.setEnabled(false);
+        this.stock.setEnabled(false);
+        this.stockMinimo.setEnabled(false);
+        this.precioCompra.setEnabled(false);
+        this.precioVenta.setEnabled(false);
+        this.btnAceptar.setEnabled(false);
+        this.btnCancelar.setEnabled(false);
+        this.btnSalir.setEnabled(false);
+    }
+
+    private void activar() {
+        this.codigo.setEnabled(true);
+        this.descripcion.setEnabled(true);
+        this.stock.setEnabled(true);
+        this.stockMinimo.setEnabled(true);
+        this.precioCompra.setEnabled(true);
+        this.precioVenta.setEnabled(true);
+        this.btnAceptar.setEnabled(true);
+        this.btnCancelar.setEnabled(true);
+        this.btnSalir.setEnabled(true);
+    }
+    private void stockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stockActionPerformed
+
+    private void stockKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stockKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stockKeyPressed
+
+    private void stockMinimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockMinimoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stockMinimoActionPerformed
+
+    private void stockMinimoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stockMinimoKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stockMinimoKeyPressed
+
+    private void precioCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_precioCompraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_precioCompraActionPerformed
+
+    private void precioCompraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioCompraKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_precioCompraKeyPressed
 
     /**
      * @param args the command line arguments
@@ -201,15 +651,29 @@ public class MenuArticulos extends javax.swing.JFrame {
     private javax.swing.JMenu PC;
     private javax.swing.JMenuItem altas;
     private javax.swing.JMenuItem bajas;
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnSalir;
+    private javax.swing.JTextField codigo;
     private javax.swing.JMenu consultas;
+    private javax.swing.JTextField descripcion;
     private javax.swing.JMenuItem entreCodigo;
-    private javax.swing.JMenuItem graficos;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu listado;
     private javax.swing.JMenu mantenimiento;
     private javax.swing.JMenuBar menu;
     private javax.swing.JMenuItem modificaciones;
     private javax.swing.JMenuItem porCodigo;
+    private javax.swing.JTextField precioCompra;
+    private javax.swing.JTextField precioVenta;
+    private javax.swing.JTextField stock;
+    private javax.swing.JTextField stockMinimo;
+    private javax.swing.JLabel textoDescripcion;
+    private javax.swing.JLabel textoPrecioCompra;
+    private javax.swing.JLabel textoPrecioVentas;
+    private javax.swing.JLabel textoStock;
+    private javax.swing.JLabel textoStockMinimo;
+    private javax.swing.JLabel textocodigo;
     private javax.swing.JMenuItem volver;
     // End of variables declaration//GEN-END:variables
 }

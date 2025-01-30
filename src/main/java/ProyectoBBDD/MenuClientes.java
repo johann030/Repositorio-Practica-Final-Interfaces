@@ -495,7 +495,6 @@ public class MenuClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     public boolean comprobar() {
-
         //Condiciones del botón de código.
         if (this.codigo.getText().matches("[0-9]+") == false || this.codigo.getText().length() != 6) {
             JOptionPane.showConfirmDialog(this, "El formato debe ser de 6 numeros", "Codigo error", JOptionPane.CLOSED_OPTION);

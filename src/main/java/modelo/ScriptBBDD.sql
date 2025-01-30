@@ -36,6 +36,6 @@ codigo VARCHAR(6) PRIMARY KEY NOT NULL,
 descripcion VARCHAR(25),
 stock FLOAT,
 stockMinimo FLOAT,
-precioCompre FLOAT,
+precioCompra FLOAT,
 precioVenta FLOAT
 );
