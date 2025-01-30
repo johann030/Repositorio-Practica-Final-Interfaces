@@ -29,8 +29,8 @@ public class EntreCodigosArticulos extends javax.swing.JFrame {
         initComponents();
     }
 
-    int codMin;
-    int codMax;
+    String codMin;
+    String codMax;
     Connection conexion;
     String url = "jdbc:mysql://localhost/tienda";
     String usuario = "johann";
@@ -200,8 +200,8 @@ public class EntreCodigosArticulos extends javax.swing.JFrame {
 
         if (!codMinText.isEmpty() && !codMaxText.isEmpty()) {
             try {
-                codMin = Integer.parseInt(codMinText);
-                codMax = Integer.parseInt(codMaxText);
+                codMin = codMinText;
+                codMax = codMaxText;
                 generarIReport();
                 vacios();
 
@@ -284,8 +284,8 @@ public class EntreCodigosArticulos extends javax.swing.JFrame {
 
         if (!codigo1.getText().isEmpty() && !codigo2.getText().isEmpty()) {
             // Recoger los valores de los códigos
-            codMin = Integer.parseInt(codigo1.getText());
-            codMax = Integer.parseInt(codigo2.getText());
+            codMin = codigo1.getText();
+            codMax = codigo2.getText();
 
             String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportEntreCodigos\\reportArticulos.jasper";
             String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportEntreCodigos\\reportArticulos.pdf";

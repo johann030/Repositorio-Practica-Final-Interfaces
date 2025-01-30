@@ -29,7 +29,7 @@ public class PorCodigoArticulos extends javax.swing.JFrame {
         initComponents();
     }
 
-    int buscarCodigo;
+    String buscarCodigo;
     Connection conexion;
     String url = "jdbc:mysql://localhost/tienda";
     String usuario = "johann";
@@ -174,7 +174,7 @@ public class PorCodigoArticulos extends javax.swing.JFrame {
 
         if (!codMinText.isEmpty()) {
             try {
-                buscarCodigo = Integer.parseInt(codMinText);
+                buscarCodigo = codMinText;
                 generarIReport();
                 vacios();
 
@@ -214,7 +214,7 @@ public class PorCodigoArticulos extends javax.swing.JFrame {
 
         if (!codigo1.getText().isEmpty()) {
             // Recoger los valores de los códigos
-            buscarCodigo = Integer.parseInt(codigo1.getText());
+            buscarCodigo = codigo1.getText();
 
             String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportArticulos.jasper";
             String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportArticulos.pdf";

@@ -9,8 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -31,7 +29,7 @@ public class PorCodigoProveedores extends javax.swing.JFrame {
         initComponents();
     }
 
-    int buscarCodigo;
+    String buscarCodigo;
     Connection conexion;
     String url = "jdbc:mysql://localhost/tienda";
     String usuario = "johann";
@@ -176,7 +174,7 @@ public class PorCodigoProveedores extends javax.swing.JFrame {
 
         if (!codMinText.isEmpty()) {
             try {
-                buscarCodigo = Integer.parseInt(codMinText);
+                buscarCodigo = codMinText;
                 generarIReport();
                 vacios();
 
@@ -216,7 +214,7 @@ public class PorCodigoProveedores extends javax.swing.JFrame {
 
         if (!codigo1.getText().isEmpty()) {
             // Recoger los valores de los códigos
-            buscarCodigo = Integer.parseInt(codigo1.getText());
+            buscarCodigo = codigo1.getText();
 
             String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportProveedores.jasper";
             String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportProveedores.pdf";

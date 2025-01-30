@@ -29,7 +29,7 @@ public class PorCodigo extends javax.swing.JFrame {
         initComponents();
     }
 
-    private int buscarCodigo;
+    String buscarCodigo;
     Connection conexion;
 
     /**
@@ -171,7 +171,7 @@ public class PorCodigo extends javax.swing.JFrame {
 
         if (!codMinText.isEmpty()) {
             try {
-                buscarCodigo = Integer.parseInt(codMinText);
+                buscarCodigo = codMinText;
                 generarIReport();
                 vacios();
 
@@ -211,7 +211,7 @@ public class PorCodigo extends javax.swing.JFrame {
 
         if (!codigo.getText().isEmpty()) {
             // Recoger los valores de los códigos
-            buscarCodigo = Integer.parseInt(codigo.getText());
+            buscarCodigo = codigo.getText();
 
             String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportClientes.jasper";
             String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportPorCodigo\\reportClientes.pdf";

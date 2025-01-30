@@ -17,7 +17,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT * FROM articulos WHERE codigo = $P{buscarCodigo}]]>
+		<![CDATA[SELECT * FROM articulos WHERE $P{buscarCodigo}]]>
 	</queryString>
 	<field name="codigo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
