@@ -10,9 +10,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -584,7 +591,7 @@ public class MenuProveedores extends javax.swing.JFrame {
     }//GEN-LAST:event_modificacionesActionPerformed
 
     private void graficosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graficosActionPerformed
-        // TODO add your handling code here:
+        generarIReport();
     }//GEN-LAST:event_graficosActionPerformed
 
     private void porCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_porCodigoActionPerformed
@@ -652,6 +659,30 @@ public class MenuProveedores extends javax.swing.JFrame {
         }
         return false;
 
+    }
+
+    public void generarIReport() {
+        Connection conexion;
+        try {
+            conexion = DriverManager.getConnection(URL, USUARIO, CONTRA);
+            System.out.println("Conexión exitosa a la base de datos.");
+
+            String informeOrigen = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportGrafico\\reportProveedores.jasper";
+            String informeDestino = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Proyecto-Final-Interfaces-master\\src\\main\\java\\ireportGrafico\\reportProveedores.pdf";
+
+            try {
+                JasperPrint jasperPrint = JasperFillManager.fillReport(informeOrigen, null, conexion);
+                System.out.println("GENERANDO INFORME");
+                JasperExportManager.exportReportToPdfFile(jasperPrint, informeDestino);
+
+                // Mostrar el informe
+                JasperViewer.viewReport(jasperPrint, false);
+            } catch (JRException ex) {
+                System.err.print(ex.getMessage());
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al conectar con la base de datos: " + e.getMessage());
+        }
     }
 
     public void altas() {
